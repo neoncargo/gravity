@@ -35,11 +35,27 @@ uint8_t check_collision(Body body1, Body body2) {
 // Если считать как в википедии, то пусть коэффициент восстановления
 // будет как у стали: 0,55
 DeltaVelocities calc_collision(Body body1, Body body2) {
-    (void)body1;
-    (void)body2;
-
+    
+    const float cor = 0.55; /* coefficient of restitution (COR), COR of steel = 0.55 */
+	
     Vec2 delta1 = { .x = 0, .y = 0 };
-    Vec2 delta2 = { .x = 100, .y = 100 };
-    DeltaVelocities result = { .delta1 = delta1, .delta2 = delta2 };
+    Vec2 delta2 = { .x = 0, .y = 0 };
+    Vec2 velocity1_after_collision = { .x = 0, .y = 0 };
+    Vec2 velocity2_after_collision= { .x = 0, .y = 0 };
+	
+    DeltaVelocities result = { .delta1 = 0, .delta2 = 0 };
+	
+    velocity1_after_collision.x = body1.velocity.x - (1 + cor) * ( body2.mass / (body1.mass + body2.mass) ) * (body1.velocity.x - body2.velocity.x);
+    velocity1_after_collision.y = body1.velocity.y - (1 + cor) * ( body2.mass / (body1.mass + body2.mass) ) * (body1.velocity.y - body2.velocity.y);
+	
+    velocity2_after_collision.x = body2.velocity.x + (1 + cor) * ( body1.mass / (body1.mass + body2.mass) ) * (body1.velocity.x - body2.velocity.x);
+    velocity2_after_collision.y = body2.velocity.y + (1 + cor) * ( body1.mass / (body1.mass + body2.mass) ) * (body1.velocity.y - body2.velocity.y);
+	
+    result.delta1.x = velocity1_after_collision.x - body1.velocity.x;
+    result.delta1.y = velocity1_after_collision.y - body1.velocity.y;
+	
+    result.delta2.x = velocity2_after_collision.x - body2.velocity.x;
+    result.delta2.y = velocity2_after_collision.y - body2.velocity.y;
+	
     return result;
 }
