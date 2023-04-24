@@ -1,4 +1,5 @@
 #include <inttypes.h>
+#include <math.h>
 
 typedef struct {
     float x;
@@ -20,7 +21,22 @@ typedef struct {
 // return 0 if no collision
 // return 1 if collision
 uint8_t check_collision(Body body1, Body body2) {
-    if (body2.position.x - body1.position.x < body1.radius) {
+
+    const float body_distance_min = body1.radius + body2.radius; /* minimum distance between bodies */
+
+    float body_distance_real = 0.0;
+
+    Vec2 body_distance_crd = { .x = 0.0, .y = 0.0 }; /* distance between centers of mass in coordinates, crd - coordinate */
+
+    body_distance_crd.x = body2.position.x - body1.position.x;
+    body_distance_crd.y = body2.position.y - body1.position.y;
+
+    body_distance_crd.x = fabs(body_distance_crd.x);
+    body_distance_crd.y = fabs(body_distance_crd.y);
+
+    body_distance_real = sqrtf(body_distance_crd.x * body_distance_crd.x + body_distance_crd.y * body_distance_crd.y);
+
+    if (body_distance_real <= body_distance_min) {
         return 1;
     }
 
