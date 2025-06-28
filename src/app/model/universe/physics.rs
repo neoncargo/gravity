@@ -21,7 +21,7 @@ impl Physics {
         Self {
             gravity: Gravity,
             _collision_logic: CollisionLogic::new(),
-            thread_pool: ThreadPool::new(4),
+            thread_pool: ThreadPool::new(8),
         }
     }
 
