@@ -28,6 +28,8 @@ impl Camera {
         let draw = app.draw();
         draw.background().color(BLACK);
 
+        draw.text("Zoom: T/Y").y(frame.rect().y.end - 10.0).font_size(20);
+
         for body in model.bodies() {
             draw.ellipse()
             .color(WHITE)
