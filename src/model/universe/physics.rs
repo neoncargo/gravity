@@ -18,7 +18,7 @@ impl Physics {
     pub fn update(&self, bodies: &mut Vec<Body>, delta_time_sec: f32) {
         let mut delta_vels: Vec<Vec2> = vec![Vec2::ZERO ; bodies.len()];
 
-        for i in 0..bodies.len()-1 {
+        for i in 0..bodies.len() {
             for j in i+1..bodies.len() {
                 let (delta1, delta2) = self.gravity.delta_velocities(&bodies[i], &bodies[j], delta_time_sec);
                 delta_vels[i] += delta1;
