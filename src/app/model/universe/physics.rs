@@ -1,6 +1,7 @@
 mod gravity;
 mod collision_logic;
 
+use log::debug;
 use nannou::geom::Vec2;
 
 use gravity::Gravity;
@@ -11,14 +12,14 @@ use super::Body;
 
 pub struct Physics {
     gravity: Gravity,
-    _collision_logic: CollisionLogic,
+    collision_logic: CollisionLogic,
 }
 
 impl Physics {
     pub fn new() -> Self {
         Self {
             gravity: Gravity,
-            _collision_logic: CollisionLogic::new(),
+            collision_logic: CollisionLogic::new(),
         }
     }
 
@@ -32,6 +33,19 @@ impl Physics {
                     delta_vels[i] += delta1;
                     delta_vels[j] += delta2;
                 }
+            }
+        }
+
+        for i in 0..bodies.len() {
+            for j in i+1..bodies.len() {
+                if !self.collision_logic.check_collision(&bodies[i], &bodies[j]) {
+                    continue;
+                }
+                debug!("collision detected");
+
+                let (delta1, delta2) = self.collision_logic.calc_collision(&bodies[i], &bodies[j]);
+                delta_vels[i] += delta1;
+                delta_vels[j] += delta2;
             }
         }
 
