@@ -1,0 +1,28 @@
+{
+    "bodies": [
+        {
+            "position": [
+            10,
+            0
+            ],
+            "radius": 40,
+            "mass": 3000000,
+            "velocity": [
+            0,
+            0
+            ]
+        },
+        {
+            "position": [
+            300,
+            0
+            ],
+            "radius": 40,
+            "mass": 3000000,
+            "velocity": [
+            -50,
+            0
+            ]
+        }
+    ]
+}
