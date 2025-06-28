@@ -1,11 +1,13 @@
 mod gravity;
 mod collision_logic;
 
+use nannou::geom::Vec2;
+
 use gravity::Gravity;
 use collision_logic::CollisionLogic;
+use crate::model::CONFIG_MANAGER;
 use super::Body;
 
-use nannou::geom::Vec2;
 
 pub struct Physics {
     gravity: Gravity,
@@ -13,16 +15,23 @@ pub struct Physics {
 }
 
 impl Physics {
-    pub fn new() -> Self { Self { gravity: Gravity, _collision_logic: CollisionLogic::new()} }
+    pub fn new() -> Self {
+        Self {
+            gravity: Gravity,
+            _collision_logic: CollisionLogic::new(),
+        }
+    }
 
     pub fn update(&self, bodies: &mut Vec<Body>, delta_time_sec: f32) {
         let mut delta_vels: Vec<Vec2> = vec![Vec2::ZERO ; bodies.len()];
 
-        for i in 0..bodies.len() {
-            for j in i+1..bodies.len() {
-                let (delta1, delta2) = self.gravity.delta_velocities(&bodies[i], &bodies[j], delta_time_sec);
-                delta_vels[i] += delta1;
-                delta_vels[j] += delta2;
+        if CONFIG_MANAGER.is_gravity_enabled() {
+            for i in 0..bodies.len() {
+                for j in i+1..bodies.len() {
+                    let (delta1, delta2) = self.gravity.delta_velocities(&bodies[i], &bodies[j], delta_time_sec);
+                    delta_vels[i] += delta1;
+                    delta_vels[j] += delta2;
+                }
             }
         }
 

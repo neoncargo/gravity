@@ -1,29 +1,35 @@
 mod universe;
+mod config_manager;
+mod save_manager;
 
 use std::fs;
-use log::{warn, debug};
 use nannou::geom::Vec2;
 
 use universe::Universe;
 use universe::body::Body;
 
+use config_manager::ConfigManager;
+use save_manager::SaveManager;
+
+use once_cell::sync::Lazy;
+
+static CONFIG_MANAGER: Lazy<ConfigManager> = Lazy::new(|| { ConfigManager::new_with_load() });
+
 pub struct Model {
     universe: Universe,
+    _save_manager: SaveManager,
 }
 
 impl Model {
     pub fn new() -> Self {
-        let save = fs::read_to_string("save.json").unwrap_or(String::new());
+        let config_manager = ConfigManager::new_with_load();
+        let save_manager = SaveManager;
 
-        let bodies: Vec<Body> = serde_json::from_str(&save).unwrap_or_else(|e| {
-            warn!("Failed to read save: {}", e);
-            Vec::new()
-        });
-
-        debug!("Loaded bodies: {:#?}", bodies);
+        let save = save_manager.load_save_from_file(config_manager.save_file_name());
 
         Self {
-            universe: Universe::new(bodies)
+            universe: Universe::new(save.bodies),
+            _save_manager: save_manager,
         }
     }
 
