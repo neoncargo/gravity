@@ -75,6 +75,9 @@ impl ViewController {
                             Key::T => {
                                 camera.set_zoom(camera.zoom() * 3. / 4.);
                             }
+                            Key::S => {
+                                self.model.save();
+                            }
                             _ => ()
                         }
                         camera.set_position(position);

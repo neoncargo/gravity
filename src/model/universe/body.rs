@@ -1,5 +1,7 @@
 use nannou::geom::Vec2;
+use serde::{Serialize, Deserialize};
 
+#[derive(Serialize, Deserialize, Default, Clone, Debug)]
 pub struct Body {
     position: Vec2,
     radius: f32,

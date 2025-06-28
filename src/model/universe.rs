@@ -23,7 +23,15 @@ impl Universe {
         bodies
     }
 
+    pub fn real_bodies(&self) -> Vec<Body> {
+        self.bodies.clone()
+    }
+
     pub fn update(&mut self, delta_time_sec: f32) {
         self.physics.update(&mut self.bodies, delta_time_sec);
+    }
+
+    pub fn _set_bodies(&mut self, bodies: Vec<Body>) {
+        self.bodies = bodies;
     }
 }

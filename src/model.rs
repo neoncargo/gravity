@@ -1,8 +1,11 @@
 mod universe;
 
+use std::fs;
+use log::{warn, debug};
+use nannou::geom::Vec2;
+
 use universe::Universe;
 use universe::body::Body;
-use nannou::geom::Vec2;
 
 pub struct Model {
     universe: Universe,
@@ -10,11 +13,14 @@ pub struct Model {
 
 impl Model {
     pub fn new() -> Self {
-        let body1 = Body::new(Vec2::new(0.0, 0.0), 10.0, 1000.0, Vec2::new(0.0, 0.0));
-        let body2 = Body::new(Vec2::new(500.0, 0.0), 10.0, 50.0, Vec2::new(0.0, 300.0));
-        let body3 = Body::new(Vec2::new(-500.0, 0.0), 10.0, 100.0, Vec2::new(0.0, -300.0));
+        let save = fs::read_to_string("save.json").unwrap_or(String::new());
 
-        let bodies = vec![body1, body2, body3];
+        let bodies: Vec<Body> = serde_json::from_str(&save).unwrap_or_else(|e| {
+            warn!("Failed to read save: {}", e);
+            Vec::new()
+        });
+
+        debug!("Loaded bodies: {:#?}", bodies);
 
         Self {
             universe: Universe::new(bodies)
@@ -27,5 +33,10 @@ impl Model {
 
     pub fn update(&mut self, delta_time_sec: f32) {
         self.universe.update(delta_time_sec);
+    }
+
+    pub fn save(&self) {
+        let str = serde_json::to_string_pretty(&self.universe.real_bodies()).expect("JSON TO STRING FAILED");
+        fs::write("save.json", str).expect("FS FAILED");
     }
 }
