@@ -1,3 +1,9 @@
+mod view_controller;
+mod model;
+
 fn main() {
-    println!("Hello, world!");
+    nannou::app(view_controller::nannou_model)
+    .event(view_controller::event)
+    .update(view_controller::update)
+    .run();
 }
