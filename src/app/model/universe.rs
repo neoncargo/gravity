@@ -28,7 +28,7 @@ impl Universe {
         bodies
     }
 
-    pub fn real_bodies(&self) -> Vec<Body> {
+    pub fn _real_bodies(&self) -> Vec<Body> {
         self.bodies.clone()
     }
 
