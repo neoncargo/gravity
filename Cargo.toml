@@ -7,3 +7,6 @@ edition = "2021"
 
 [dependencies]
 nannou = "0.18.1"
+log = "0.4.17"
+chrono = "0.4.22"
+fern = { version = "0.6", features = ["colored"] }
