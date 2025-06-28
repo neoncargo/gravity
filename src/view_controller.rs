@@ -7,6 +7,8 @@ use model::Model;
 use camera::Camera;
 
 pub fn nannou_model(app: &App) -> NannouModel {
+    setup_logger().unwrap_or_else(|e| println!("Logger failed: {e}"));
+
     let window = app.new_window().view(view).build().unwrap();
     let view_controller = ViewController::new(window);
 
@@ -82,4 +84,24 @@ impl ViewController {
             }
         }
     }
+}
+
+fn setup_logger() -> Result<(), fern::InitError> {
+    fern::Dispatch::new()
+        .format(|out, message, record| {
+            out.finish(format_args!(
+                "{}[{}:{}][{}] {}",
+                chrono::Local::now().format("[%Y-%m-%d][%H:%M:%S]"),
+                record.file().unwrap_or("unknown"),
+                record.line().unwrap_or(0),
+                fern::colors::ColoredLevelConfig::new().color(record.level()),
+                message
+            ))
+        })
+        .level_for("gravity", log::LevelFilter::Debug)
+        .level(log::LevelFilter::Off)
+        .chain(std::io::stdout())
+        .chain(fern::log_file("output.log")?)
+        .apply()?;
+    Ok(())
 }
