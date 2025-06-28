@@ -41,8 +41,8 @@ impl Model {
         self.universe.update(delta_time_sec);
     }
 
-    pub fn save(&self) {
-        let str = serde_json::to_string_pretty(&self.universe.real_bodies()).expect("JSON TO STRING FAILED");
+    pub fn _save(&self) {
+        let str = serde_json::to_string_pretty(&self.universe._real_bodies()).expect("JSON TO STRING FAILED");
         fs::write("save.json", str).expect("FS FAILED");
     }
 }

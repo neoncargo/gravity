@@ -5,7 +5,7 @@ use nannou::geom::Vec2;
 
 use gravity::Gravity;
 use collision_logic::CollisionLogic;
-use crate::model::CONFIG_MANAGER;
+use crate::app::model::CONFIG_MANAGER;
 use super::Body;
 
 
