@@ -10,7 +10,7 @@ pub struct Body {
 }
 
 impl Body {
-    pub fn new(position: Vec2, radius: f32, mass: f32, velocity: Vec2) -> Self {
+    pub fn _new(position: Vec2, radius: f32, mass: f32, velocity: Vec2) -> Self {
         Self { position, radius, mass, velocity }
     }
 
