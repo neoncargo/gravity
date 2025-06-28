@@ -18,4 +18,8 @@ impl CollisionLogic {
     pub fn calc_collision(&self, body1: &Body, body2: &Body) -> (Vec2, Vec2) {
         self.bodies_logic.calc_collision(body1, body2)
     }
+
+    pub fn calc_collision_positions(&self, body1: &Body, body2: &Body) -> (Vec2, Vec2) {
+        self.bodies_logic.calc_collision_positions(body1, body2)
+    }
 }

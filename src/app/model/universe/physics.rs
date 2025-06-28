@@ -1,7 +1,6 @@
 mod gravity;
 mod collision_logic;
 
-use log::debug;
 use nannou::geom::Vec2;
 
 use gravity::Gravity;
@@ -41,11 +40,14 @@ impl Physics {
                 if !self.collision_logic.check_collision(&bodies[i], &bodies[j]) {
                     continue;
                 }
-                debug!("collision detected");
 
                 let (delta1, delta2) = self.collision_logic.calc_collision(&bodies[i], &bodies[j]);
                 delta_vels[i] += delta1;
                 delta_vels[j] += delta2;
+
+                let (position1, position2) = self.collision_logic.calc_collision_positions(&bodies[i], &bodies[j]);
+                bodies[i].set_position(position1);
+                bodies[j].set_position(position2);
             }
         }
 

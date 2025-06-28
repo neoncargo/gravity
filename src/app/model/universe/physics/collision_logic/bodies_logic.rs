@@ -21,6 +21,21 @@ impl BodiesLogic {
             (result.delta1, result.delta2)
         }
     }
+
+    pub fn calc_collision_positions(&self, body1: &Body, body2: &Body) -> (Vec2, Vec2) {
+        let radius_sum = body1.radius() + body2.radius();
+
+        let distance_between_centers = Vec2::distance(body1.position(), body2.position());
+
+        let delta = radius_sum - distance_between_centers;
+
+        let delta_to_each = delta / 2.0;
+
+        let position1 = body1.position() + (body1.position() - body2.position()).normalize_or_zero() * delta_to_each;
+        let position2 = body2.position() + (body2.position() - body1.position()).normalize_or_zero() * delta_to_each;
+
+        (position1, position2)
+    }
 }
 
 #[repr(C)]
