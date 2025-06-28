@@ -12,7 +12,12 @@ pub struct Universe {
 }
 
 impl Universe {
-    pub fn new(bodies: Vec<Body>) -> Self { Self { bodies, physics: Physics::new() } }
+    pub fn new(bodies: Vec<Body>) -> Self {
+        Self {
+            bodies,
+            physics: Physics::new(),
+        }
+    }
 
     pub fn bodies(&self) -> Vec<(Vec2, f32)> {
         let mut bodies = Vec::new();
