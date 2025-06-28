@@ -1,5 +1,5 @@
 use std::fs;
-use log::{debug, warn};
+use log::{trace, debug, warn};
 use serde::{Serialize, Deserialize};
 
 use super::Body;
@@ -19,7 +19,7 @@ impl Save {
             warn!("Failed to read save: {}", e);
             String::new()
         });
-        debug!("Save str: {save_str}");
+        trace!("Save str: {save_str}");
 
         serde_json::from_str(&save_str).unwrap_or_else(|e| {
             warn!("Failed to deserialize save: {}", e);
